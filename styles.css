@@ -14,14 +14,13 @@ footer {
 
 body,
 header,
-main,
-#poke-evolution {
+main {
   flex-direction: column;
 }
 
 main {
   justify-content: flex-start;
-  min-height: 60vh;
+  min-height: 80vh;
 }
 
 footer {
@@ -37,12 +36,31 @@ a {
   font-weight: bold;
 }
 
+img {
+  max-height: 30vh;
+}
+
 #poke-evolution {
-  flex-wrap: wrap;
   margin: 5vh;
 }
 
-.poke-evolution-level {
+.poke-stage {
   display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   justify-content: center;
+  margin: 1vh;
+  border: 1px solid black;
+  border-radius: 5%;
+  padding: 20px 10px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #FFDE00;
+  border: 10px solid #3B4CCA;
+  border-radius: 5%;
+  margin: 1vh;
 }

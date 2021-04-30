@@ -83,21 +83,21 @@
    * @returns
    */
   function parseEvolution(evolutionChain) {
-    let evolutionArray = [evolutionChain.species.name];
+    let evolutionArray = [[evolutionChain.species.name]];
     let evolutionQueue = [evolutionChain.evolves_to];
 
     // follow evolution chain until end
     while (evolutionQueue[0] !== undefined && evolutionQueue[0].length !== 0) {
       evolutionChain = evolutionQueue.shift();
+      let subEvolutionArray = [];
       for (let field in evolutionChain) {
-        console.log(field);
         if (parseInt(field) !== NaN) {
-          evolutionArray.push(evolutionChain[field].species.name);
+          subEvolutionArray.push(evolutionChain[field].species.name);
           evolutionQueue.push(evolutionChain[field].evolves_to);
         }
       }
+      evolutionArray.push(subEvolutionArray);
     }
-    console.log(evolutionArray);
     return evolutionArray;
   }
 
@@ -107,8 +107,8 @@
    */
   async function generateTree(evolutionArray) {
     id("poke-evolution").innerHTML = "";
-    for (let name of evolutionArray) {
-      await addImage(name);
+    for (let stage of evolutionArray) {
+      await addStage(stage);
     }
   }
 
@@ -116,12 +116,23 @@
    *
    * @param {*} name
    */
-  async function addImage(name) {
-    let img = gen("img");
-    let pokeInfo = await makePokemonRequest(name);
-    img.src = pokeInfo.sprites.other["official-artwork"].front_default;
-    img.alt = "Official artwork of " + name;
-    id("poke-evolution").appendChild(img);
+  async function addStage(stage) {
+    let stageContainer = gen("poke-stage");
+    stageContainer.classList.add("poke-stage");
+    for (let name of stage) {
+      let card = gen("div");
+      let img = gen("img");
+      let text = gen("h3");
+      let pokeInfo = await makePokemonRequest(name);
+      card.classList.add("card");
+      img.src = pokeInfo.sprites.other["official-artwork"].front_default;
+      img.alt = "Official artwork of " + name;
+      text.textContent = name;
+      card.appendChild(img);
+      card.appendChild(text);
+      stageContainer.appendChild(card);
+    }
+    id("poke-evolution").appendChild(stageContainer);
   }
 
   /**
