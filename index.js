@@ -36,9 +36,17 @@
         let evolutionArray = parseEvolution(evolutionChain.chain);
         generateTree(evolutionArray);
       } catch (err) {
-        console.error(err);
+        handleError();
       }
     }
+  }
+
+  function handleError(err) {
+    let message = gen("p");
+    message.classList.add("error");
+    message.textContent = "Unable to find Pokémon requested. Please try again.";
+    id("poke-evolution").innerHTML = "";
+    id("poke-evolution").appendChild(message);
   }
 
   /**

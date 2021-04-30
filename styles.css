@@ -1,4 +1,5 @@
-body {
+body,
+input {
   font-family: 'Montserrat', sans-serif;
 }
 
@@ -63,4 +64,9 @@ img {
   border: 10px solid #3B4CCA;
   border-radius: 5%;
   margin: 1vh;
+}
+
+.error {
+  font-weight: bold;
+  margin: auto 0;
 }
