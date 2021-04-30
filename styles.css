@@ -14,7 +14,8 @@ footer {
 
 body,
 header,
-main {
+main,
+#poke-evolution {
   flex-direction: column;
 }
 
@@ -39,4 +40,9 @@ a {
 #poke-evolution {
   flex-wrap: wrap;
   margin: 5vh;
+}
+
+.poke-evolution-level {
+  display: flex;
+  justify-content: center;
 }

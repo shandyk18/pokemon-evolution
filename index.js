@@ -24,8 +24,12 @@
     id("poke-name").addEventListener("keypress", (e) => makeRequest(e));
   }
 
+  /**
+   *
+   * @param {*} e
+   */
   async function makeRequest(e) {
-    if (e.key == "Enter") {
+    if (e.key === "Enter") {
       try {
         let basePokemon = await makePokemonSpeciesRequest(e);
         let evolutionChain = await makeEvolutionRequest(basePokemon.evolution_chain.url);
@@ -37,6 +41,11 @@
     }
   }
 
+  /**
+   *
+   * @param {*} name
+   * @returns
+   */
   async function makePokemonRequest(name) {
     let resp = await fetch(BASE_URL + "pokemon/" + name);
     resp = await statusCheck(resp);
@@ -44,13 +53,23 @@
     return resp;
   }
 
-  async function makePokemonSpeciesRequest(e) {
-    let resp = await fetch(BASE_URL + "pokemon-species/" + e.target.value.toLowerCase());
+  /**
+   *
+   * @param {*} event
+   * @returns
+   */
+  async function makePokemonSpeciesRequest(event) {
+    let resp = await fetch(BASE_URL + "pokemon-species/" + event.target.value.toLowerCase());
     resp = await statusCheck(resp);
     resp = await resp.json();
     return resp;
   }
 
+  /**
+   *
+   * @param {*} evolutionURL
+   * @returns
+   */
   async function makeEvolutionRequest(evolutionURL) {
     let resp = await fetch(evolutionURL);
     resp = await statusCheck(resp);
@@ -58,26 +77,45 @@
     return resp;
   }
 
+  /**
+   *
+   * @param {*} evolutionChain
+   * @returns
+   */
   function parseEvolution(evolutionChain) {
     let evolutionArray = [evolutionChain.species.name];
-    evolutionChain = evolutionChain.evolves_to;
+    let evolutionQueue = [evolutionChain.evolves_to];
 
     // follow evolution chain until end
-    while (evolutionChain[0] !== undefined) {
-      evolutionArray.push(evolutionChain[0].species.name);
-      evolutionChain = evolutionChain[0].evolves_to;
+    while (evolutionQueue[0] !== undefined && evolutionQueue[0].length !== 0) {
+      evolutionChain = evolutionQueue.shift();
+      for (let field in evolutionChain) {
+        console.log(field);
+        if (parseInt(field) !== NaN) {
+          evolutionArray.push(evolutionChain[field].species.name);
+          evolutionQueue.push(evolutionChain[field].evolves_to);
+        }
+      }
     }
+    console.log(evolutionArray);
     return evolutionArray;
   }
 
+  /**
+   *
+   * @param {*} evolutionArray
+   */
   async function generateTree(evolutionArray) {
-    console.log(evolutionArray);
     id("poke-evolution").innerHTML = "";
     for (let name of evolutionArray) {
       await addImage(name);
     }
   }
 
+  /**
+   *
+   * @param {*} name
+   */
   async function addImage(name) {
     let img = gen("img");
     let pokeInfo = await makePokemonRequest(name);
