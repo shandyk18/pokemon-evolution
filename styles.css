@@ -1,3 +1,12 @@
+/*
+  Name: Shandy Kim
+  Date: April 28, 2021
+  Section: CSE 154 AH
+
+  This file styles index.html for Pokémon evolution visualization.
+  Common styling includes centered content and the Pokémon color palette.
+*/
+
 body,
 input {
   font-family: 'Montserrat', sans-serif;
@@ -29,6 +38,10 @@ footer {
   height: 5vh;
   color: #ffffff;
   background-color: #ef5350;
+}
+
+input {
+  padding: 5px;
 }
 
 a {

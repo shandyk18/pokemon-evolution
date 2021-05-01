@@ -3,7 +3,8 @@
  * Date: April 28, 2021
  * Section: CSE 154 AH
  *
- * -- your description of what this file does here --
+ * This file is responsible for displaying Pokémon evolution diagrams through PokéAPI.
+ * Only valid Pokémon names are accepted and can correctly display a diagram.
  */
 
 "use strict";
@@ -18,20 +19,20 @@
   window.addEventListener("load", init);
 
   /**
-   * CHANGE: Describe what your init function does here.
+   * Initializes event listener for Pokemon name input
    */
   function init() {
-    id("poke-name").addEventListener("keypress", (e) => makeRequest(e));
+    id("poke-name").addEventListener("keypress", event => makeRequest(event));
   }
 
   /**
-   *
-   * @param {*} e
+   * Makes a request for given Pokemon name to show evolution diagram
+   * @param {object} event Event fired when 'enter' is pressed
    */
-  async function makeRequest(e) {
-    if (e.key === "Enter") {
+  async function makeRequest(event) {
+    if (event.key === "Enter") {
       try {
-        let basePokemon = await makePokemonSpeciesRequest(e);
+        let basePokemon = await makePokemonSpeciesRequest(event);
         let evolutionChain = await makeEvolutionRequest(basePokemon.evolution_chain.url);
         let evolutionArray = parseEvolution(evolutionChain.chain);
         generateTree(evolutionArray);
@@ -41,7 +42,10 @@
     }
   }
 
-  function handleError(err) {
+  /**
+   * Displays error message when an error occurs
+   */
+  function handleError() {
     let message = gen("p");
     message.classList.add("error");
     message.textContent = "Unable to find Pokémon requested. Please try again.";
@@ -50,9 +54,9 @@
   }
 
   /**
-   *
-   * @param {*} name
-   * @returns
+   * Fetches Pokémon information given valid name
+   * @param {string} name Given Pokémon name from user
+   * @return {object} JSON of received response
    */
   async function makePokemonRequest(name) {
     let resp = await fetch(BASE_URL + "pokemon/" + name);
@@ -62,9 +66,9 @@
   }
 
   /**
-   *
-   * @param {*} event
-   * @returns
+   * Fetches Pokémon species information given valid name
+   * @param {object} event Event fired when 'enter' is pressed
+   * @return {object} JSON of received response
    */
   async function makePokemonSpeciesRequest(event) {
     let resp = await fetch(BASE_URL + "pokemon-species/" + event.target.value.toLowerCase());
@@ -74,9 +78,9 @@
   }
 
   /**
-   *
-   * @param {*} evolutionURL
-   * @returns
+   * Fetches Pokémon evolution information given valid URL
+   * @param {string} evolutionURL evolution URL of a Pokémon species
+   * @return {object} JSON of received response
    */
   async function makeEvolutionRequest(evolutionURL) {
     let resp = await fetch(evolutionURL);
@@ -86,9 +90,9 @@
   }
 
   /**
-   *
-   * @param {*} evolutionChain
-   * @returns
+   * Parses Pokémon evolution JSON into different evolution stages
+   * @param {object} evolutionChain JSON of Pokémon species evolution
+   * @return {string[][]} Array of Pokémon evolution stage names
    */
   function parseEvolution(evolutionChain) {
     let evolutionArray = [[evolutionChain.species.name]];
@@ -110,8 +114,8 @@
   }
 
   /**
-   *
-   * @param {*} evolutionArray
+   * Generates Pokémon evolution tree stage-by-stage
+   * @param {string[][]} evolutionArray Array of Pokémon evolution stage names
    */
   async function generateTree(evolutionArray) {
     id("poke-evolution").innerHTML = "";
@@ -121,8 +125,8 @@
   }
 
   /**
-   *
-   * @param {*} name
+   * Generates card(s) for each given Pokémon evolution stage
+   * @param {string[]} stage Array of Pokémon names in this stage
    */
   async function addStage(stage) {
     let stageContainer = gen("poke-stage");
@@ -164,24 +168,6 @@
    */
   function id(idName) {
     return document.getElementById(idName);
-  }
-
-  /**
-   * Returns the first element that matches the given CSS selector.
-   * @param {string} selector - CSS query selector.
-   * @returns {object} The first DOM object matching the query.
-   */
-  function qs(selector) {
-    return document.querySelector(selector);
-  }
-
-  /**
-   * Returns the array of elements that match the given CSS selector.
-   * @param {string} selector - CSS query selector
-   * @returns {object[]} array of DOM objects matching the query.
-   */
-  function qsa(selector) {
-    return document.querySelectorAll(selector);
   }
 
   /**
