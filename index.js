@@ -33,7 +33,7 @@
     rock: 'rgb(184, 160, 56, 0.7)',
     steel: 'rgb(184, 184, 208, 0.7)',
     unknown: 'rgb(104, 160, 144, 0.7)',
-    water: 'rgb(104, 144, 240, 0.7)',
+    water: 'rgb(104, 144, 240, 0.7)'
   };
 
   /**
@@ -96,7 +96,7 @@
    */
   async function makePokemonSpeciesRequest(event) {
     // strips punctuation, converts whitespace to '-', and converts to lowercase
-    let formattedName = event.target.value.replace(/[.,\/#!$%\^&\*;:{}=\_`'~()]/g,"")
+    let formattedName = event.target.value.replace(/[.,/#!$%^&*;:{}=_`'~()]/g, "")
       .replace(/\s+/g, '-')
       .toLowerCase();
     let resp = await fetch(BASE_URL + "pokemon-species/" + formattedName);
@@ -186,6 +186,12 @@
     id("poke-evolution").appendChild(stageContainer);
   }
 
+  /**
+   * Add text associated with Pokémon card
+   * @param {DOMElement} card Container for Pokémon card contents
+   * @param {string} name Name of Pokémon
+   * @param {object} pokeInfo JSON object for given Pokémon info
+   */
   function addCardText(card, name, pokeInfo) {
     let textName = gen("h3");
     let textType = gen("h3");
@@ -200,9 +206,16 @@
     card.appendChild(textType);
   }
 
+  /**
+   * Add styling associated with Pokémon card
+   * @param {DOMElement} card Container for Pokémon card contents
+   * @param {object} pokeInfo JSON object for given Pokémon info
+   */
   function addCardStyle(card, pokeInfo) {
     card.classList.add("card");
     card.style.backgroundColor = TYPE_COLOR[pokeInfo.types[0].type.name];
+
+    // add second color border if there exists a second type
     if (pokeInfo.types[1] !== undefined) {
       card.style.borderColor = TYPE_COLOR[pokeInfo.types[1].type.name];
     }
