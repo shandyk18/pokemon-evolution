@@ -92,18 +92,22 @@
   /**
    * Parses Pokémon evolution JSON into different evolution stages
    * @param {object} evolutionChain JSON of Pokémon species evolution
-   * @return {string[][]} Array of Pokémon evolution stage names
+   * @return {object} Array of Pokémon evolution stage names
    */
   function parseEvolution(evolutionChain) {
     let evolutionArray = [[evolutionChain.species.name]];
     let evolutionQueue = [evolutionChain.evolves_to];
 
-    // follow evolution chain until end
+    // follow evolution chain (nested in JSON) until queue is "empty"
     while (evolutionQueue[0] !== undefined && evolutionQueue[0].length !== 0) {
       evolutionChain = evolutionQueue.shift();
       let subEvolutionArray = [];
+
+      // iterates through all pokémon that evolves from current species
       for (let field in evolutionChain) {
-        if (parseInt(field) !== NaN) {
+
+        // number represents a key to evolved pokémon
+        if (!isNaN(parseInt(field))) {
           subEvolutionArray.push(evolutionChain[field].species.name);
           evolutionQueue.push(evolutionChain[field].evolves_to);
         }
@@ -115,13 +119,20 @@
 
   /**
    * Generates Pokémon evolution tree stage-by-stage
-   * @param {string[][]} evolutionArray Array of Pokémon evolution stage names
+   * @param {object} evolutionArray Array of Pokémon evolution stage names
    */
   async function generateTree(evolutionArray) {
-    id("poke-evolution").innerHTML = "";
+    let container = id("poke-evolution");
+    container.innerHTML = "";
     for (let stage of evolutionArray) {
+      let arrow = gen("img");
+      arrow.src = "./img/arrow.png";
+      arrow.alt = "Arrow symbol";
+      arrow.classList.add("arrow");
       await addStage(stage);
+      container.appendChild(arrow);
     }
+    container.removeChild(container.lastChild);
   }
 
   /**
@@ -131,6 +142,8 @@
   async function addStage(stage) {
     let stageContainer = gen("poke-stage");
     stageContainer.classList.add("poke-stage");
+
+    // add cards in evolution stage
     for (let name of stage) {
       let card = gen("div");
       let img = gen("img");
