@@ -81,6 +81,7 @@ img {
 .arrow {
   max-height: 15vh;
   opacity: 60%;
+  margin: 0;
 }
 
 .poke-stage,
@@ -95,8 +96,11 @@ img {
 }
 
 .card {
-  background-color: #FFDE00;
-  border: 10px solid #3B4CCA;
+  border: 10px solid white;
+}
+
+.card > img {
+  margin: 20px;
 }
 
 .error {

@@ -13,6 +13,29 @@
 
   const BASE_URL = "https://pokeapi.co/api/v2/";
 
+  // original colors from: https://bulbapedia.bulbagarden.net/wiki/Category:Type_color_templates
+  const TYPE_COLOR = {
+    bug: 'rgb(168, 184, 32, 0.7)',
+    dark: 'rgb(112, 88, 72, 0.7)',
+    dragon: 'rgb(112, 56, 248, 0.7)',
+    electric: 'rgb(248, 208, 48, 0.7)',
+    fairy: 'rgb(238, 153, 172, 0.7)',
+    fighting: 'rgb(192, 48, 40, 0.7)',
+    fire: 'rgb(240, 128, 48, 0.7)',
+    flying: 'rgb(168, 144, 240, 0.7)',
+    ghost: 'rgb(112, 88, 152, 0.7)',
+    grass: 'rgb(120, 200, 80, 0.7)',
+    ground: 'rgb(224, 192, 104, 0.7)',
+    ice: 'rgb(152, 216, 216, 0.7)',
+    normal: 'rgb(168, 168, 120, 0.7)',
+    poison: 'rgb(160, 64, 160, 0.7)',
+    psychic: 'rgb(248, 88, 136, 0.7)',
+    rock: 'rgb(184, 160, 56, 0.7)',
+    steel: 'rgb(184, 184, 208, 0.7)',
+    unknown: 'rgb(104, 160, 144, 0.7)',
+    water: 'rgb(104, 144, 240, 0.7)',
+  };
+
   /**
    * Add a function that will be called when the window is loaded.
    */
@@ -31,6 +54,7 @@
    */
   async function makeRequest(event) {
     if (event.key === "Enter") {
+      makePokemonSpeciesRequest(event);
       try {
         let basePokemon = await makePokemonSpeciesRequest(event);
         let evolutionChain = await makeEvolutionRequest(basePokemon.evolution_chain.url);
@@ -71,7 +95,11 @@
    * @return {object} JSON of received response
    */
   async function makePokemonSpeciesRequest(event) {
-    let resp = await fetch(BASE_URL + "pokemon-species/" + event.target.value.toLowerCase());
+    // strips punctuation, converts whitespace to '-', and converts to lowercase
+    let formattedName = event.target.value.replace(/[.,\/#!$%\^&\*;:{}=\_`'~()]/g,"")
+      .replace(/\s+/g, '-')
+      .toLowerCase();
+    let resp = await fetch(BASE_URL + "pokemon-species/" + formattedName);
     resp = await statusCheck(resp);
     resp = await resp.json();
     return resp;
@@ -147,17 +175,37 @@
     for (let name of stage) {
       let card = gen("div");
       let img = gen("img");
-      let text = gen("h3");
       let pokeInfo = await makePokemonRequest(name);
-      card.classList.add("card");
       img.src = pokeInfo.sprites.other["official-artwork"].front_default;
       img.alt = "Official artwork of " + name;
-      text.textContent = name;
       card.appendChild(img);
-      card.appendChild(text);
+      addCardStyle(card, pokeInfo);
+      addCardText(card, name, pokeInfo);
       stageContainer.appendChild(card);
     }
     id("poke-evolution").appendChild(stageContainer);
+  }
+
+  function addCardText(card, name, pokeInfo) {
+    let textName = gen("h3");
+    let textType = gen("h3");
+    textName.textContent = name;
+    if (pokeInfo.types[1] === undefined) {
+      textType.textContent = "type: " + pokeInfo.types[0].type.name;
+    } else {
+      textType.textContent = "type: " + pokeInfo.types[0].type.name +
+        ", " + pokeInfo.types[1].type.name;
+    }
+    card.appendChild(textName);
+    card.appendChild(textType);
+  }
+
+  function addCardStyle(card, pokeInfo) {
+    card.classList.add("card");
+    card.style.backgroundColor = TYPE_COLOR[pokeInfo.types[0].type.name];
+    if (pokeInfo.types[1] !== undefined) {
+      card.style.borderColor = TYPE_COLOR[pokeInfo.types[1].type.name];
+    }
   }
 
   /**
