@@ -95,7 +95,13 @@
    * @return {object} JSON of received response
    */
   async function makePokemonSpeciesRequest(event) {
-    // strips punctuation, converts whitespace to '-', and converts to lowercase
+    /**
+     * strips punctuation, converts whitespace to '-', and converts to lowercase
+     * regex for punctuation: https://stackoverflow.com/questions/4328500/how-can-i-strip-all
+     * -punctuation-from-a-string-in-javascript-using-regex
+     * regex for whitespace: https://stackoverflow.com/questions/1983648/replace-spaces-with
+     * -dashes-and-make-all-letters-lower-case
+     */
     let formattedName = event.target.value.replace(/[.,/#!$%^&*;:{}=_`'~()]/g, "")
       .replace(/\s+/g, '-')
       .toLowerCase();
@@ -160,6 +166,8 @@
       await addStage(stage);
       container.appendChild(arrow);
     }
+
+    // remove last arrow symbol
     container.removeChild(container.lastChild);
   }
 
