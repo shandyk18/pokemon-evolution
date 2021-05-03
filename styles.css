@@ -75,7 +75,7 @@ img {
 }
 
 #poke-evolution {
-  margin-top: 5vh;
+  margin: 5vh;
 }
 
 .arrow {
@@ -84,19 +84,13 @@ img {
   margin: 0;
 }
 
-.poke-stage,
-.card {
-  border-radius: 5%;
-  margin: 1vh;
-}
-
 .poke-stage {
   flex-wrap: wrap;
-  padding: 20px 10px;
 }
 
 .card {
-  border: 10px solid white;
+  margin: 1vh;
+  border-radius: 5%;
 }
 
 .card > img {

@@ -223,9 +223,11 @@
     card.classList.add("card");
     card.style.backgroundColor = TYPE_COLOR[pokeInfo.types[0].type.name];
 
-    // add second color border if there exists a second type
+    // add two-tone background if more than one type
     if (pokeInfo.types[1] !== undefined) {
-      card.style.borderColor = TYPE_COLOR[pokeInfo.types[1].type.name];
+      card.style.backgroundImage = "-webkit-linear-gradient(35deg, " +
+        TYPE_COLOR[pokeInfo.types[0].type.name] + " 50%, " +
+        TYPE_COLOR[pokeInfo.types[1].type.name] + " 50%)";
     }
   }
 
