@@ -225,8 +225,10 @@
     // add two-tone background if more than one type
     if (pokeInfo.types[1] !== undefined) {
 
-      // https://stackoverflow.com/questions/14739162/two-tone-background-split-by
-      // -diagonal-line-using-css
+      /**
+       * https://stackoverflow.com/questions/14739162/two-tone-background-split-by
+       * -diagonal-line-using-css
+       */
       card.style.backgroundImage = "-webkit-linear-gradient(35deg, " +
         TYPE_COLOR[pokeInfo.types[0].type.name] + " 50%, " +
         TYPE_COLOR[pokeInfo.types[1].type.name] + " 50%)";
