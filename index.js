@@ -15,25 +15,25 @@
 
   // original colors from: https://bulbapedia.bulbagarden.net/wiki/Category:Type_color_templates
   const TYPE_COLOR = {
-    bug: 'rgb(168, 184, 32, 0.7)',
-    dark: 'rgb(112, 88, 72, 0.7)',
-    dragon: 'rgb(112, 56, 248, 0.7)',
-    electric: 'rgb(248, 208, 48, 0.7)',
-    fairy: 'rgb(238, 153, 172, 0.7)',
-    fighting: 'rgb(192, 48, 40, 0.7)',
-    fire: 'rgb(240, 128, 48, 0.7)',
-    flying: 'rgb(168, 144, 240, 0.7)',
-    ghost: 'rgb(112, 88, 152, 0.7)',
-    grass: 'rgb(120, 200, 80, 0.7)',
-    ground: 'rgb(224, 192, 104, 0.7)',
-    ice: 'rgb(152, 216, 216, 0.7)',
-    normal: 'rgb(168, 168, 120, 0.7)',
-    poison: 'rgb(160, 64, 160, 0.7)',
-    psychic: 'rgb(248, 88, 136, 0.7)',
-    rock: 'rgb(184, 160, 56, 0.7)',
-    steel: 'rgb(184, 184, 208, 0.7)',
-    unknown: 'rgb(104, 160, 144, 0.7)',
-    water: 'rgb(104, 144, 240, 0.7)'
+    bug: 'rgba(168, 184, 32, 0.7)',
+    dark: 'rgba(112, 88, 72, 0.7)',
+    dragon: 'rgba(112, 56, 248, 0.7)',
+    electric: 'rgba(248, 208, 48, 0.7)',
+    fairy: 'rgba(238, 153, 172, 0.7)',
+    fighting: 'rgba(192, 48, 40, 0.7)',
+    fire: 'rgba(240, 128, 48, 0.7)',
+    flying: 'rgba(168, 144, 240, 0.7)',
+    ghost: 'rgba(112, 88, 152, 0.7)',
+    grass: 'rgba(120, 200, 80, 0.7)',
+    ground: 'rgba(224, 192, 104, 0.7)',
+    ice: 'rgba(152, 216, 216, 0.7)',
+    normal: 'rgba(168, 168, 120, 0.7)',
+    poison: 'rgba(160, 64, 160, 0.7)',
+    psychic: 'rgba(248, 88, 136, 0.7)',
+    rock: 'rgba(184, 160, 56, 0.7)',
+    steel: 'rgba(184, 184, 208, 0.7)',
+    unknown: 'rgba(104, 160, 144, 0.7)',
+    water: 'rgba(104, 144, 240, 0.7)'
   };
 
   /**
@@ -221,13 +221,17 @@
    */
   function addCardStyle(card, pokeInfo) {
     card.classList.add("card");
-    card.style.backgroundColor = TYPE_COLOR[pokeInfo.types[0].type.name];
 
     // add two-tone background if more than one type
     if (pokeInfo.types[1] !== undefined) {
+
+      // https://stackoverflow.com/questions/14739162/two-tone-background-split-by
+      // -diagonal-line-using-css
       card.style.backgroundImage = "-webkit-linear-gradient(35deg, " +
         TYPE_COLOR[pokeInfo.types[0].type.name] + " 50%, " +
         TYPE_COLOR[pokeInfo.types[1].type.name] + " 50%)";
+    } else {
+      card.style.backgroundColor = TYPE_COLOR[pokeInfo.types[0].type.name];
     }
   }
 
