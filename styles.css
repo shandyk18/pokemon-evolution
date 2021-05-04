@@ -88,8 +88,12 @@ img {
 }
 
 .card {
-  margin: 1vh;
+  margin: 5px;
   border-radius: 5%;
+}
+
+.card > img {
+  margin: 10px;
 }
 
 .error {
