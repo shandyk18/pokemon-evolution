@@ -166,9 +166,10 @@
         await addStage(stage);
         container.appendChild(arrow);
       }
+
       // remove last arrow symbol
       container.removeChild(container.lastChild);
-    } catch(err) {
+    } catch (err) {
       handleError();
     }
   }
