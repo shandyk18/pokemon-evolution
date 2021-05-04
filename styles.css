@@ -92,10 +92,6 @@ img {
   border-radius: 5%;
 }
 
-.card > img {
-  margin: 20px;
-}
-
 .error {
   margin: auto 0;
 }
