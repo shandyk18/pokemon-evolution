@@ -4,7 +4,7 @@
   Section: CSE 154 AH
 
   This file styles index.html for Pokémon evolution visualization.
-  Common styling includes centered content and the Pokémon color palette.
+  Common styling includes centered content and Montserrat font for text.
 */
 
 body,
@@ -81,7 +81,6 @@ img {
 .arrow {
   max-height: 15vh;
   opacity: 60%;
-  margin: 0;
 }
 
 .poke-stage {

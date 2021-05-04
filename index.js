@@ -54,7 +54,6 @@
    */
   async function makeRequest(event) {
     if (event.key === "Enter") {
-      makePokemonSpeciesRequest(event);
       try {
         let basePokemon = await makePokemonSpeciesRequest(event);
         let evolutionChain = await makeEvolutionRequest(basePokemon.evolution_chain.url);
@@ -158,17 +157,20 @@
   async function generateTree(evolutionArray) {
     let container = id("poke-evolution");
     container.innerHTML = "";
-    for (let stage of evolutionArray) {
-      let arrow = gen("img");
-      arrow.src = "./img/arrow.png";
-      arrow.alt = "Arrow symbol";
-      arrow.classList.add("arrow");
-      await addStage(stage);
-      container.appendChild(arrow);
+    try {
+      for (let stage of evolutionArray) {
+        let arrow = gen("img");
+        arrow.src = "./img/arrow.png";
+        arrow.alt = "Arrow symbol";
+        arrow.classList.add("arrow");
+        await addStage(stage);
+        container.appendChild(arrow);
+      }
+      // remove last arrow symbol
+      container.removeChild(container.lastChild);
+    } catch(err) {
+      handleError();
     }
-
-    // remove last arrow symbol
-    container.removeChild(container.lastChild);
   }
 
   /**
